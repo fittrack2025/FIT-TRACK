@@ -1,0 +1,97 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Trainer</title>
+    <link rel="stylesheet" href="{% static 'css/verify.css' %}">
+   
+</head>
+<body>
+    <header class="bar">
+        <div class="logo">
+          <a href="#">Fittrack</a>
+        </div>
+        <nav class="nav">
+          <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="#">Notification</a></li>
+          </ul>
+      </nav>
+      </header>
+<div class="main">
+    <h2>Verify Trainer</h2>
+    <table border="1" >
+        <tr>
+            
+            <th>Name</th>  
+            <th>Age</th>
+            <th>Phone</th>
+            <!-- <th>Place</th> -->
+            <th>certificate</th>
+            <th>email</th>
+            <th>Verify</th>
+            
+            
+        </tr>
+        {%for i in val%}
+        <tr>
+            <td>{{i.name}}</td>
+            <td>{{i.age}}</td>
+            <td>{{i.phone}}</td>
+            <!-- <td>{{i.place}}</td> -->
+            <td>{{i.certificate}}</td>
+            <td>{{i.email}}</td>
+            <td>
+                <a href="/app/Accept_Trainer/{{i.id}}" class="green">Accept</a> 
+                
+                <a href="/app/Reject_Trainer/{{i.id}}" onclick="return confirm('are you sure you want to reject the trainer')" class="red">Reject</a>
+            </td>
+        
+        </tr>
+        {%endfor%}
+        
+    </table>
+
+
+
+<br>
+<br>
+<br>
+
+<table border="1">
+    <tr colspan="5"><h2>ACCEPTED TRAINERS</h2></tr>
+    <tr>
+        
+        <th>Name</th>
+        <th>age</th>
+        <th>phone</th>
+        <th>certificate</th>
+        <th>email</th>
+        
+        
+        
+    </tr>
+
+    {% for i in val1 %}
+    <tr>
+        
+        <td>{{i.name}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.phone}}</td>
+        <td>{{i.certificate}}</td>
+        <td>{{i.email}}</td>
+
+             
+    </tr>
+    
+    {% endfor %}
+
+</table>
+</div>
+
+</body>
+</html>

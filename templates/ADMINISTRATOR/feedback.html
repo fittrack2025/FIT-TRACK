@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <link rel="stylesheet" href="notification.css"></link>
+</head>
+<body>
+    
+    <table border="1">
+        <tr>
+            
+            <th>USER</th>
+            <th>feedback</th>
+            <th>reply</th>
+            <th>created_at</th>
+            <th>updated_at</th>
+            
+
+        </tr>
+    </tr>
+    {% for i in val%}
+    <tr class="one">
+        <td>{{i.USER}}</td>
+        <td>{{i.feedback}}</td>
+        <td>{{i.reply}}</td>
+        <td>{{i.created_at}}</td>
+        <td>{{i.updated_at}}</td>
+    <td><a href="/Reply/{{i.id}}">reply</a> </td>
+    </tr>
+    {%endfor%}
+    </table>
+</body>
+</html>

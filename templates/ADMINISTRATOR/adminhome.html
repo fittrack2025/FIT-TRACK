@@ -1,0 +1,119 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fittrack Admin Panel</title>
+    <link rel="stylesheet" href="{% static 'css/admin.css' %}">
+</head>
+
+<body>
+    <div class="body">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <ul class="nav">
+                
+                <a href="Verifytrainer/"><li>Trainer</li></a>            
+                <a href="Verifydietition"><li>Dietitians</li></a>
+                <a href="Verifyuser/"><li>Users</li></a>      
+                <!-- <a href="#"><li>Notification</li></a> -->
+                <a href="/Feedback/"><li>Feedback</li></a>             
+                <a href="#"><li>Complaints</li></a>
+            </ul>
+        </nav>
+
+        <!-- Main Content Area -->
+        <div class="main">
+            <!-- Navbar (Header) -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="toggle-btn" id="toggle-btn">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-center">
+                    <h1>FITTRACK</h1>
+                </div>
+                <div class="navbar-right">
+                    <div class="notifications">
+                        <a href="#"><span>Logout</span></a>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Section -->
+            <section class="content">
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/jogging.jpg' %}" alt="Trainers">
+                    </div>
+                    <div class="info">
+                        <a href="/Verifyuser/"><h3>Users</h3></a>
+                        <p>{{val}} Registered Users</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/plate.jpg' %}" alt="Dietitians">
+                    </div>
+                    <div class="info">
+                        <a href="/Verifydietition/"><h3>Dietitians</h3></a>
+                        <p>{{val1}} Available Dietitians</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/dumbbell.jpg' %}" alt="Users">
+                    </div>
+                    <div class="info">
+                        <a href="/Verifytrainer/"><h3>Trainers</h3></a>
+                        <p>{{val2}} Active Trainers</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/whey.jpg' %}" alt="Notifications">
+                    </div>
+                    <div class="info">
+                        <a href="#"><h3>Nutri shop</h3></a>
+                        <p>45 Products</p>
+                    </div>
+                </div>
+                <!-- <div class="card">
+                    <div class="image">
+                        <img src="bell.png" alt="Nutri Shop">
+                    </div>
+                    <div class="info">
+                        <h3>Notification</h3>
+                        <p>3 Unread Notifications</p>
+                    </div>
+                </div> -->
+            </section>
+        </div>
+    </div>
+
+    <!-- Internal JavaScript -->
+    <script>
+        const toggleButton = document.getElementById('toggle-btn');
+        const sidebar = document.getElementById('sidebar');
+        const bars = toggleButton.querySelectorAll('.bar');
+
+        toggleButton.addEventListener('click', () => {
+            // Toggle the sidebar visibility
+            sidebar.classList.toggle('hidden');
+            
+            // Toggle the hamburger icon to "X" and vice versa
+            bars.forEach(bar => {
+                bar.classList.toggle('toggle');
+            });
+        });
+    </script>
+</body>
+
+</html>

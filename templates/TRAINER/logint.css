@@ -1,0 +1,61 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-left: 700px;
+    padding-top: 150px;
+    background-color: rgb(59, 59, 59);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image:url(trainpage.jpg);
+    
+}
+
+.one {
+    background-color: #ffffff33;
+    padding: 20px;
+    border: 1px;
+    border-radius: 10px;
+    width: 400px;
+    backdrop-filter: blur(10px);
+   
+}
+
+h2 {
+    color: #ffffff;
+    margin-bottom: 20px;
+    padding-left: 90px;
+    
+}
+
+label, input {
+    color: #fff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px;
+    border-radius: 5px;
+    color: #000;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: rgb(59, 59, 59);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #ffe666;
+    color: white;
+}

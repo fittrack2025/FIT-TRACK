@@ -1,0 +1,51 @@
+{% load static %}
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Web</title>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+    
+    <div class="one">
+        <h1>LOGIN</h1>   
+        <form action="#" method="POST">
+            {% csrf_token %}
+            <!-- Username input -->
+            <div class="input-group">
+               
+                <input class="input" type="text" id="username" name="username" required placeholder="Enter username">
+            </div>
+            
+            <!-- Password input -->
+            <div class="input-group">
+                
+                <input class="input" type="password" id="password" name="password" required placeholder="Enter password">
+            </div>
+            
+            <!-- Remember Me checkbox -->
+            <div class="options">
+                <label for="label">
+                    <input type="checkbox" name="label" id="label"> Remember me
+                </label>
+                <a href="#" class="forgot-password" aria-label="Forgot password">Forgot password?</a>
+            </div>
+
+            <!-- Submit button -->
+            <button type="submit">LOGIN</button>
+
+            <!-- Register link -->
+            <div class="f">
+                <p>Don't have an account? <a href="#" aria-label="Register here">Register</a></p>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
