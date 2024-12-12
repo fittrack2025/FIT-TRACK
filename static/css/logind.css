@@ -1,0 +1,127 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(59, 59, 59);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-image:url('../img/diets.jpg');
+    
+}
+
+.one {
+    background-color: #ffffff33;
+    padding: 20px;
+    border: 1px;
+    border-radius: 10px;
+    width: 400px;
+    backdrop-filter: blur(10px);
+    position: relative;
+}
+.switch {
+    display: flex;
+    padding: 10px;
+    position: absolute;
+    top: 30px;
+    background-color: #ffffff33;
+    width: 400px;
+    justify-content: center;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.switch h3 {
+    margin-right: 30px;
+    margin-left: 30px;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.switch .divider {
+    width: 1px;
+    height: 30px;
+    background-color: #000;
+    margin: 0 15px;
+    transition: transform 0.3s ease;
+}
+
+/* Change the color of active tab */
+.switch a.active h3 {
+    color: #ff7f50; /* Active tab color */
+}
+
+.switch a:hover h3 {
+    color: #007BFF; /* Hover color */
+}
+
+.switch a {
+    display: inline-block;
+    padding: 5px 10px;
+    transition: transform 0.3s ease;
+}
+
+/* Enlarges active tab */
+.switch a.active {
+    transform: scale(1.1);
+}
+
+/* Hide divider when active */
+.switch a.active + .divider {
+    transform: scaleX(0); /* Makes divider disappear when active */
+}
+
+/* Optional: Make it look clicked with a background color */
+.switch a.active {
+    background-color: rgba(255, 127, 80, 0.2);
+}
+
+h3{
+    color: white;
+}
+
+h2 {
+    color: #96d662;
+    margin-bottom: 20px;
+    text-align: center;
+    
+}
+
+label, input {
+    color: #fff;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px;
+    border-radius: 5px;
+    color: #000;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff;
+    color: rgb(59, 59, 59);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #96d662;
+    color: white;
+}
+a{
+    text-decoration: none;
+}

@@ -1,17 +1,27 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dietition</title>
-    <link rel="stylesheet" href="logind.css">
+    <link rel="stylesheet" href="{% static 'css/logind.css' %}">
 </head>
 <body>
-    <h2>Register For Dietitions</h2>
+    <div class="switch">
+        <a href="/Logind" id="dietitionTab"><h3>Dietition</h3></a>
+        <div class="divider"></div>
+        <a href="/Logint" id="trainerTab"><h3>Trainer</h3></a>
+    </div>
+    
     <div class="one">
         
-        <form>
-            <label for="email">Name:</label><br>
+        <form action="" method="post">
+            {% csrf_token %}
+            <h2>Register For Dietitions</h2>
+
+            <label for="name">Name:</label><br>
             <input type="text" id="txt" name="name" required placeholder="Enter your Name"><br>
 
             <label for="age">Age:</label><br>
@@ -33,4 +43,35 @@
         </form>
     </div>
 </body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const switchLinks = document.querySelectorAll('.switch a');
+    
+    // Set active class for the Dietition tab
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('logind.html')) {
+        document.getElementById('dietitionTab').classList.add('active');
+    }
+
+    // Event listener for click on the tabs
+    switchLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            // Remove active class from all links
+            switchLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to the clicked link
+            this.classList.add('active');
+            
+            // Navigate to the clicked link
+            window.location.href = this.getAttribute('href');
+        });
+    });
+});
+
+</script>
 </html>

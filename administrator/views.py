@@ -22,10 +22,14 @@ class Login(View):
         Login_obj = LoginTable.objects.get(username=username,password=password)
         print(Login_obj)
         if Login_obj.type == "admin":
-         return HttpResponse('''<script>alert("Welcome to admin");window.location = "/Adminhome"</script>''')        
+         return HttpResponse('''<script>alert("Welcome to Admin");window.location = "/Adminhome"</script>''')  
+        elif Login_obj.type == "Dietition":
+         return HttpResponse('''<script>alert("Welcome to dietition");window.location = "/Dietitionhome"</script>''')    
+        else:
+            return HttpResponse('''<script>alert("INVALID");window.location = "/"</script>''')
                                 
 
-# /////////////////////////////////////////// ADMINISTRATORISTRATOR /////////////////////////////////////////////
+# /////////////////////////////////////////// ADMINISTRATOR /////////////////////////////////////////////
 
 
 class Adminhome(View):
@@ -79,8 +83,17 @@ class Feedback(View):
         return render(request,'ADMINISTRATOR/feedback.html',{'val':obj})
     
 class Feedbackreply(View):
-    def get(self,request):
-        return render(request,'ADMINISTRATOR/feedbackreply.html')  
+    def get(self,request,f_id):
+        obj=FeedbackTable.objects.get(id=f_id)
+        return render(request,'ADMINISTRATOR/feedbackreply.html',{'val':obj} ) 
+    def post(self,request,f_id):
+        obj=FeedbackTable.objects.get(id=f_id)
+        reply=request.POST['reply']
+        obj.reply=reply
+        obj.save()
+        return HttpResponse('''<script>alert("successfully replied");window.location="/Feedback/"</script>''')  
+
+
     
 
 
@@ -88,10 +101,7 @@ class Reply(View):
     def get(self,request): 
         return render(request,'ADMINISTRATOR/reply.html')
     
-class Complaints(View):
-    def get(self,request):
-        obj=ComplaintTable.objects.all()
-        return render(request,'ADMINISTRATOR/complaints.html',{'val':obj})
+
 
 
 class Verifydietition(View):
@@ -182,15 +192,46 @@ class Bookingd(View):
     
 class Dietitionhome(View):
     def get(self,request):
-        return render(request,'DIETITION/dietitionhome.html')
+        obj=UserTable.objects.filter(LOGINID__type='user').count()
+        obj1=UserTable.objects.filter(LOGINID__type='bookedusers').count()
+        obj2=UserTable.objects.filter(LOGINID__type='trainer').count()
+        obj3=UserTable.objects.filter(LOGINID__type='products').count()
+
+        
+        return render(request,'DIETITION/dietitionhome.html',{'val':obj,'val1':obj1,'val2':obj2, 'val3':obj3})
+        
+
     
 class Dietitionuser(View):
     def get(self,request):
-        return render(request,'DIETITION\dietitonuser.html')    
+        obj=UserTable.objects.all()
+        return render(request,'DIETITION\dietitionuser.html')    
     
 class Logind(View):
     def get(self,request):
-        return render(request,'DIETITION/logind.html')     
+        return render(request,'DIETITION/logind.html') 
+    def post(self,request):
+            name = request.POST['name']
+            age = request.POST['age']
+            phone = request.POST['phone']
+            certificate = request.POST['certificate']
+            email = request.POST['email']
+            password = request.POST['password']
+            login_obj = LoginTable()
+            login_obj.username = name
+            login_obj.password = password
+            login_obj.type = 'pending'
+            login_obj.save()
+            obj = DietitionTable()
+            obj.name=name
+            obj.age=age
+            obj.phone=phone
+            obj.certificate=certificate
+            obj.email=email
+            obj.LOGIN=login_obj
+            obj.save()
+            return HttpResponse('''<script>alert("successfully registered");window.location="/"</script>''')  
+
     
 
 
@@ -202,6 +243,28 @@ class Logind(View):
 class Logint(View):
     def get(self,request):
         return render(request,'TRAINER/logint.html')   
+    def post(self,request):
+            name = request.POST['name']
+            age = request.POST['age']
+            phone = request.POST['phone']
+            certificate = request.POST['certificate']
+            email = request.POST['email']
+            password = request.POST['password']
+            login_obj = LoginTable()
+            login_obj.username = name
+            login_obj.password = password
+            login_obj.type = 'pending'
+            login_obj.save()
+            obj = TrainerTable()
+            obj.name=name
+            obj.age=age
+            obj.phone=phone
+            obj.certificate=certificate
+            obj.email=email
+            obj.LOGIN=login_obj
+            obj.save()
+            return HttpResponse('''<script>alert("successfully registered");window.location="/"</script>''')  
+
     
 
 class Bookingt(View):
@@ -224,3 +287,21 @@ class Managepost(View):
     def get(self,request):
         obj=PostTable.objects.all()
         return render(request,'TRAINER/managepost.html',{'val':obj})    
+ 
+class Complaints(View):
+    def get(self,request):
+        obj=ComplaintTable.objects.all()
+        return render(request,'ADMINISTRATOR/complaints.html',{'val':obj})
+  
+
+class Reply(View):
+    def get(self,request,pk):
+        obj=ComplaintTable.objects.get(pk=pk)
+        return render(request,'ADMINISTRATOR/reply.html',{'val':obj} ) 
+    def post(self,request,pk):
+        obj=ComplaintTable.objects.get(pk=pk)
+        reply=request.POST['reply']
+        obj.reply=reply
+        obj.save()
+        return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''')  
+

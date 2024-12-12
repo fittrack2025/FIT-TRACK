@@ -12,6 +12,7 @@
         <tr>
             <!-- <th>sl No.</th>
             <th>username</th> -->
+            <th>id</th>
             <th>Complaint</th>
             <th>reply</th>
             
@@ -23,10 +24,11 @@
         <!-- <td></td>
         <td></td>
         <td></td> -->
+        <td>{{i.id}}</td>
         <td>{{i.complaint}}</td>
-        <td></td>
+        <td>{{i.reply}}</td>
     
-    <td><a href="Reply">reply</a> </td>
+    <td><a href="/Reply/{{i.id}}">reply</a> </td>
     </tr>
     {%endfor%}
     </table>

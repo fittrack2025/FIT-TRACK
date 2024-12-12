@@ -1,16 +1,28 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trainer</title>
-    <link rel="stylesheet" href="logint.css">
+    <link rel="stylesheet" href="{% static 'css/logint.css' %}">
 </head>
 <body>
-    <h2>Register For Trainers</h2>
+    <!-- logint.html -->
+<div class="switch">
+    <a href="/Logind" id="dietitionTab"><h3>Dietition</h3></a>
+    <div class="divider"></div>
+    <a href="/Logint" id="trainerTab"><h3>Trainer</h3></a>
+</div>
+
+    
     <div class="one">
         
-        <form>
+        <form action="" method="post">
+             {% csrf_token %}
+            <h2>Register For Trainer</h2>
+
             <label for="email">Name:</label><br>
             <input type="text" id="txt" name="name" required placeholder="Enter your Name"><br>
 
@@ -33,4 +45,35 @@
         </form>
     </div>
 </body>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const switchLinks = document.querySelectorAll('.switch a');
+    
+    // Set active class for the Trainer tab
+    const currentUrl = window.location.href;
+    if (currentUrl.includes('logint.html')) {
+        document.getElementById('trainerTab').classList.add('active');
+    }
+
+    // Event listener for click on the tabs
+    switchLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault(); // Prevent default link behavior
+            
+            // Remove active class from all links
+            switchLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Add active class to the clicked link
+            this.classList.add('active');
+            
+            // Navigate to the clicked link
+            window.location.href = this.getAttribute('href');
+        });
+    });
+});
+
+</script>
 </html>

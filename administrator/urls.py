@@ -11,8 +11,8 @@ urlpatterns = [
     path('Accept_User/<int:u_id>/',Accept_User.as_view(),name="Accept_User"),
     path('Reject_User/<int:u_id>/',Reject_User.as_view(),name="Reject_User"),
 
-    path('Reply/',Reply.as_view()),
-    path('Feedbackreply/',Feedbackreply.as_view()),
+    path('Reply/<int:pk>',Reply.as_view(), name='reply'),
+    path('Feedbackreply/<int:f_id>',Feedbackreply.as_view()),
 
     path('Verifydietition/',Verifydietition.as_view()),
     path('Accept_Dietition/<int:d_id>/',Accept_Dietition.as_view(),name="Accept_Dietition"),

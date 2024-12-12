@@ -1,242 +1,115 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Navbar with Sidebar</title>
-
-  <style>
-    /* General body styles */
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow-x: hidden; /* Prevents horizontal scrolling */
-    }
-
-    /* Navbar styles */
-    .navbar {
-      display: flex;
-      justify-content: center; /* Centers the content horizontally */
-      align-items: center; /* Centers content vertically */
-      padding-top: 25px;
-      background-color: #0B0421;
-      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.503);
-      height: 50px;
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Logo and text centered */
-    .logo {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%); /* Center the logo and title */
-    }
-
-    .logo img {
-      height: 30px;
-      width: 30px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid white;
-      margin-right: 10px;
-    }
-
-    .logo-text {
-      color: rgb(255, 255, 255);
-      font-size: 24px;
-      font-weight: bold;
-    }
-
-    /* Toggle button for sidebar */
-    .toggle-btn {
-      position: absolute;
-      left: 20px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 24px;
-      cursor: pointer;
-      color: white;
-      z-index: 3;
-    }
-
-    /* Sidebar styles */
-    .sidebar {
-      height: 100%;
-      width: 0; /* Hidden by default */
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: #0B0421;
-      overflow-x: hidden; /* Disable horizontal scrolling */
-      transition: 0.5s;
-      padding-top: 60px; /* Space for navbar */
-      z-index: 1;
-    }
-
-    .sidebar a {
-        margin-top: 80px;
-      padding: 10px 15px;
-      text-decoration: none; /* No underline */
-      font-size: 18px;
-      color: white;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover {
-      font-size: 20px;
-      color: rgb(208, 37, 37);
-    }
-
-    /* Close button inside sidebar */
-    .sidebar .close-btn {
-      position: absolute;
-      top: 0;
-      right: 10px;
-      font-size: 36px;
-      margin-left: 50px;
-      cursor: pointer;
-      color: white;
-    }
-
-    /* Card styles for content */
-    .card {
-      display: flex;
-      justify-content: space-evenly;
-      margin-top: 100px;
-      background-color: rgba(3, 3, 69, 0.129);
-      height: 300px;
-    }
-
-    .car {
-      height: 50px;
-      width: 50px;
-      background-color: #0B0421;
-      margin-top: 20px;
-      border-radius: 20px;
-      box-shadow: 10px 20px 5px rgba(0, 0, 0, 0.503);
-      padding: 100px;
-      display: flex;
-      justify-content: center;
-      transition: 0.5s ease;
-    }
-
-    .car:hover{
-        transform: scale(1.1);
-    }
-
-    .car a {
-        text-decoration: none;
-      color: aliceblue;
-    }
-
-    /* Centered flexbox helper classes */
-    .blah {
-      display: flex;
-      justify-content: center;
-    }
-
-    .icon {
-      margin-top: -50px;
-    }
-
-    .top {
-      margin-top: -40px;
-    }
-
-    /* Main content */
-    main {
-      padding: 20px;
-      transition: margin-left 0.5s ease, width 0.5s ease;
-    }
-
-    /* Sidebar open, adjust main content */
-    .sidebar-open main {
-      margin-left: 250px;
-      width: calc(100% - 250px); /* Adjust width based on sidebar */
-    }
-  </style>
-
-  <!-- Font Awesome stylesheet for icon usage -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dietiton Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dhome.css' %}">
 </head>
+
 <body>
+    <div class="body">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <ul class="nav">
+                <a href="#"><li>Profile</li></a>
+                <a href="#"><li>Users</li></a>
+                <a href="#"><li>Booked Users</li></a>
+                <a href="#"><li>Nutrishop</li></a>
+            </ul>
+        </nav>
 
-  <!-- Navbar with logo and title in the center -->
-  <div class="navbar">
-    <span class="toggle-btn" onclick="toggleSidebar()"><i class="fa fa-bars"></i></span>
-    <div class="logo">
-      <img src="qa.jpg" alt="Logo">
-      <span class="logo-text">FIT TRACK</span>
+        <!-- Main Content Area -->
+        <div class="main">
+            <!-- Navbar (Header) -->
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <button class="toggle-btn" id="toggle-btn">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+                <div class="navbar-center">
+                    <h1>FITTRACK</h1>
+                </div>
+                <div class="navbar-right">
+                    <div class="notifications">
+                        <a href="#"></a><span>Notifications</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content Section -->
+            <section class="content">
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/jogging.jpg' %}" alt="Trainers">
+                    </div>
+                    <div class="info">
+                        <a href="/Dietitionuser/"><h3>Users</h3></a>
+                        <p>{{val}} Registered Users</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/diets.jpg' %}" alt="Dietitians">
+                    </div>
+                    <div class="info">
+                        <a href="#"><h3>Booked Users</h3></a>
+                        <p>{{val1}} users online</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/dumbbell.jpg' %}" alt="Users">
+                    </div>
+                    <div class="info">
+                        <a href="#"><h3>Trainers</h3></a>
+                        <p>{{val2}} Active Trainers</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="image">
+                        <img src="{% static 'img/whey.jpg' %}" alt="Notifications">
+                    </div>
+                    <div class="info">
+                        <a href="#"><h3>Nutri shop</h3></a>
+                        <p>{{val3}} Products</p>
+                    </div>
+                </div>
+                <!-- <div class="card">
+                    <div class="image">
+                        <img src="bell.png" alt="Nutri Shop">
+                    </div>
+                    <div class="info">
+                        <h3>Notification</h3>
+                        <p>3 Unread Notifications</p>
+                    </div>
+                </div> -->
+            </section>
+        </div>
     </div>
-  </div>
 
-  <!-- Sidebar with navigation links -->
-  <div class="sidebar" id="sidebar">
-    <a href="#home">PROFILE</a>
-    <a href="#home">FEEDBACK</a>
-    <a href="#services">COMPLAINTS</a>
-    <a href="#chat">CHAT</a>
-    <a href="#contact">LOGOUT</a>
-  </div>
+    <!-- Internal JavaScript -->
+    <script>
+        const toggleButton = document.getElementById('toggle-btn');
+        const sidebar = document.getElementById('sidebar');
+        const bars = toggleButton.querySelectorAll('.bar');
 
-  <!-- Main content (cards and other sections) -->
-  <main id="main-content">
-    <div class="card">
-      <div class="car"> <a href="login.html"><div class="blah"><i class="fa-solid fa-user-tie icon" style="color: #fcfcfc; font-size: 50px;"></i></div><center><p class="cent">USER</p></center></a></div>
-      <div class="car"><a href="login.html"><div class="top"><div class="blah"><i class="fa-solid fa-user-large" style="color: #f5f7fa; font-size: 50px;"></i></div></div><center><p>BOOKING</p></center></a></div>
-      <div class="car"><a href="login.html"><div class="top"><div class="blah"><i class="fa-solid fa-users" style="color: #fafcff; font-size: 50px;"></i></div></div> <center><p align="center">NUTRI SHOP</p></center></a></div>
-      <!-- <div class="car"><a href="login.html"><div class="blah"><i class="fa-solid fa-clock icon" style="color: #f5f5f5; font-size: 50px;"></i></div><p align="center">NUTRISHOP</p></a></div> -->
-      <div class="car"><a href="login.html"><div class="top"><div class="blah"><i class="fa-solid fa-location-dot" style="color: #f7f7f7; font-size: 50px;"></i></div></div><p>OTHERS</p></a></div>
-    </div>
-  </main>
-
-  <!-- JavaScript to control sidebar behavior -->
-  <script>
-    let isOpen = false;
-
-    function toggleSidebar() {
-      if (isOpen) {
-        closeSidebar();
-      } else {
-        openSidebar();
-      }
-    }
-
-    function openSidebar() {
-      document.getElementById("sidebar").style.width = "250px"; /* Open sidebar */
-      document.getElementById("main-content").classList.add('sidebar-open'); /* Adjust main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-bars'); /* Change to close icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-times');
-      isOpen = true;
-
-      // Add event listener for clicks outside the sidebar
-      document.addEventListener('click', handleOutsideClick);
-    }
-
-    function closeSidebar() {
-      document.getElementById("sidebar").style.width = "0"; /* Close sidebar */
-      document.getElementById("main-content").classList.remove('sidebar-open'); /* Reset main content */
-      document.querySelector('.toggle-btn i').classList.remove('fa-times'); /* Change back to menu icon */
-      document.querySelector('.toggle-btn i').classList.add('fa-bars');
-      isOpen = false;
-
-      // Remove event listener for outside clicks
-      document.removeEventListener('click', handleOutsideClick);
-    }
-
-    // Function to detect clicks outside the sidebar and close it
-    function handleOutsideClick(event) {
-      const sidebar = document.getElementById('sidebar');
-      if (isOpen && !sidebar.contains(event.target) && !event.target.closest('.toggle-btn')) {
-        closeSidebar();
-      }
-    }
-  </script>
+        toggleButton.addEventListener('click', () => {
+            // Toggle the sidebar visibility
+            sidebar.classList.toggle('hidden');
+            
+            // Toggle the hamburger icon to "X" and vice versa
+            bars.forEach(bar => {
+                bar.classList.toggle('toggle');
+            });
+        });
+    </script>
 </body>
+
+</html>
