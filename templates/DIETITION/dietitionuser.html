@@ -9,24 +9,24 @@
     <h2>user personal details</h2>
     <table border="1">
         <tr>
-            <th>name</th>
-            <th>age</th>
+            <th>USER</th>
             <th>height</th>
             <th>weight</th>
             <th>calorie</th>
-            <th>health issue</th>
+            <th>preference</th>
+            <th>health_issue</th>
             <th>chat</th>
 
         </tr>
 
         {% for i in val %}
         <tr>
-            <td>{{i.name}}</td>
-            <td>{{i.age}}</td>
+            <td>{{i.USER.name}}</td>
             <td>{{i.height}}</td>
             <td>{{i.weight}}</td>
             <td>{{i.calorie}}</td>
-            <td>{{i.health}}</td>
+            <td>{{i.preference}}</td>
+            <td>{{i.health_issue}}</td>
             <td><button type="button">chat</button></td>
         </tr>
         {%endfor%}

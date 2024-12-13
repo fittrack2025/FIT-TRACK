@@ -12,53 +12,28 @@
     <h2>Trainer-booking</h2>
     <table border="1" >
         <tr>
-            <th>booking_id</th>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>No</th>
+            <th>TRAINER</th>
+            <th>Username</th>
+            <th>Date & Time </th>
             <th>Status</th>
-            <th>details</th>
+            <th>Details</th>
             
         </tr>
+
+        {% for i in val %}
         <tr class="one">
-            <td>aswanthcv@gmail.com</td>
-            <td>Aswanth</td>
-            <td>9995740145</td>
-            <td>19</td>
-            <td>Punnassery</td>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.TRAINER.name}}</td>
+            <td>{{i.USER.name}}</td>
+            <td>{{i.date}} {{i.time}}</td>
+            <td>{{i.Status}}</td>
+            <td><a href="/Traineruser/{{i.USER.id}}">details</a> </td>
             
-            <td><button type="button" class="green">View</button></td>
         
         </tr>
-        <tr class="two">
-            <td>jibin@gmail.com</td>
-            <td>Jibin</td>
-            <td>88888888</td>
-            <td>20</td>
-            <td>koduvally</td>
-            
-            <td><button type="button" class="green">View</button></td>
-        
-        </tr>
-        <tr class="one">
-            <td>anand@gmail.com</td>
-            <td>Ananad</td>
-            <td>88899969</td>
-            <td>19</td>
-            <td>pavandoor</td>
-            
-            <td><button type="button" class="green">View</button></td>
-        
-        </tr>
-        <tr class="two">
-            <td>abin@gmail.com</td>
-            <td>Abinraj</td>
-            <td>97777777</td>
-            <td>21</td>
-            <td>pannur</td>
-            <td><button type="button" class="green">View</button></td>
-        
-        </tr>
+        {% endfor %}
+       
         
     </table>
 </div>

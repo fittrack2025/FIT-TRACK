@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+<div class="one">
+<table border="1">
+    <tr colspan="5"><h2> USERS</h2></tr>
+    <tr>
+        
+        <th>Name</th>
+        <th>Place</th>
+        <th>Age</th>
+        <th>Phone</th>
+        <th>email</th>
+        
+        
+        
+    </tr>
+
+    {% for i in val %}
+    <tr>
+        
+        <td>{{i.name}}</td>
+        <td>{{i.place}}</td>
+        <td>{{i.age}}</td>
+        <td>{{i.phone}}</td>
+        <td>{{i.email}}</td>
+
+             
+    </tr>
+    
+    {% endfor %}
+
+</table>
+</div>
+</body>
+</html>

@@ -31,8 +31,11 @@ urlpatterns = [
     
     path('Bookingd/',Bookingd.as_view()),
     path('Dietitionhome/',Dietitionhome.as_view()),
-    path('Dietitionuser/',Dietitionuser.as_view()),
+    path('Dietitionuser/<int:i_id>/',Dietitionuser.as_view()),
     path('Logind/',Logind.as_view()),
+    path('Users/',Users.as_view()),
+    path('Trainers/',Trainers.as_view()),
+
 
 
     #//////////////////////////////// TRAINER //////////////////////////////////////////
@@ -40,7 +43,7 @@ urlpatterns = [
     path('Logint/',Logint.as_view()),
     path('Bookingt/',Bookingt.as_view()),
     path('Trainerhome/',Trainerhome.as_view()),
-    path('Traineruser/',Traineruser.as_view()),
+    path('Traineruser/<int:i_id>/',Traineruser.as_view()),
     path('Managepost/',Managepost.as_view())
 
 

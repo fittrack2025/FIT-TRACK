@@ -18,7 +18,7 @@ class UserTable(models.Model):
     LOGINID=models.ForeignKey(LoginTable,on_delete=models.CASCADE)
     name= models.CharField(max_length=30, blank=True,null=True)
     place= models.CharField(max_length=30, blank=True,null=True)
-    age=models.IntegerField(max_length=30,blank=True, null=True)
+    age=models.IntegerField(blank=True, null=True)
     phone= models.BigIntegerField(blank=True, null=True)
     email= models.CharField(max_length=30, blank=True,null=True)    
     
@@ -44,7 +44,7 @@ class TrainerTable(models.Model):
     name= models.CharField(max_length=30, blank=True,null=True)
     age= models.CharField(max_length=30, blank=True,null=True)
     phone= models.IntegerField(blank=True,null=True) 
-    certificate= models.FileField ( upload_to='T_certificate', blank=True,null=True)
+    certificate= models.FileField (upload_to='T_certificate', blank=True,null=True)
     email= models.CharField(max_length=30, blank=True,null=True) 
 
 class DietitionTable(models.Model):
@@ -53,18 +53,17 @@ class DietitionTable(models.Model):
     age= models.CharField(max_length=30, blank=True,null=True)
     phone= models.IntegerField(blank=True,null=True) 
     certificate= models.FileField ( upload_to='D_certificate', blank=True,null=True)
-
     email= models.CharField(max_length=30, blank=True,null=True) 
 
 
 class BookingdTable(models.Model):
+    No=models.CharField(max_length=30, blank=True,null=True)
+    DIETITION=models.ForeignKey(DietitionTable, on_delete=models.CASCADE)
     USER=models.ForeignKey(UserTable, on_delete=models.CASCADE)
-    DIETITIAN=models.ForeignKey(DietitionTable, on_delete=models.CASCADE)
-    name= models.CharField(max_length=30, blank=True,null=True) 
-    date= models.CharField(max_length=30, blank=True,null=True)
+    Date = models.CharField(max_length=30, blank=True,null=True)
     time= models.CharField(max_length=30, blank=True,null=True) 
-    status= models.CharField(max_length=30, blank=True,null=True)
-    details = models.FileField(blank=True,null=True) 
+    Status= models.CharField(max_length=30, blank=True,null=True)
+    # details = models.CharField(max_length=30,blank=True,null=True) 
 
 
 class BookingtTable(models.Model):
@@ -74,7 +73,7 @@ class BookingtTable(models.Model):
     date= models.CharField(max_length=30, blank=True,null=True)
     time= models.CharField(max_length=30, blank=True,null=True) 
     status= models.CharField(max_length=30, blank=True,null=True)
-    details = models.CharField(max_length=300, blank=True,null=True)
+    # details = models.CharField(max_length=300, blank=True,null=True)
 
 
 class RatingTable(models.Model):
@@ -120,4 +119,5 @@ class ChatTable(models.Model):
     sender= models.ForeignKey(LoginTable, on_delete=models.CASCADE, related_name="sender")
     receiver= models.ForeignKey(LoginTable, on_delete=models.CASCADE, related_name="receiver") 
     message= models.CharField(max_length=30, blank=True,null=True)
+
 

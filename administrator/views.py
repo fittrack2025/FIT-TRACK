@@ -22,9 +22,11 @@ class Login(View):
         Login_obj = LoginTable.objects.get(username=username,password=password)
         print(Login_obj)
         if Login_obj.type == "admin":
-         return HttpResponse('''<script>alert("Welcome to Admin");window.location = "/Adminhome"</script>''')  
+         return HttpResponse('''<script>alert("Welcome to Admin panel");window.location = "/Adminhome"</script>''')  
         elif Login_obj.type == "Dietition":
-         return HttpResponse('''<script>alert("Welcome to dietition");window.location = "/Dietitionhome"</script>''')    
+         return HttpResponse('''<script>alert("Welcome to Dietition Dashboard");window.location = "/Dietitionhome"</script>''')   
+        elif Login_obj.type == "Trainer": 
+         return HttpResponse('''<script>alert("Welcome to Trainer Dashboard");window.location = "/Trainerhome/"</script>''')     
         else:
             return HttpResponse('''<script>alert("INVALID");window.location = "/"</script>''')
                                 
@@ -193,19 +195,33 @@ class Bookingd(View):
 class Dietitionhome(View):
     def get(self,request):
         obj=UserTable.objects.filter(LOGINID__type='user').count()
-        obj1=UserTable.objects.filter(LOGINID__type='bookedusers').count()
+        obj1 = BookingdTable.objects.all().count()
         obj2=UserTable.objects.filter(LOGINID__type='trainer').count()
         obj3=UserTable.objects.filter(LOGINID__type='products').count()
+        print(obj,obj1,obj2,obj3)
 
         
         return render(request,'DIETITION/dietitionhome.html',{'val':obj,'val1':obj1,'val2':obj2, 'val3':obj3})
         
 
+
+class Users(View):
+    def get(self,request):
+        obj=UserTable.objects.filter(LOGINID__type='user')
+        print(obj)
+        return render(request,'DIETITION/users.html',{'val':obj})    
+    
+class Trainers(View):
+    def get(self,request):
+        obj=TrainerTable.objects.filter(LOGIN__type='Trainer')
+        print(obj)
+        return render(request,'DIETITION/trainers.html',{'val':obj})    
+       
     
 class Dietitionuser(View):
-    def get(self,request):
-        obj=UserTable.objects.all()
-        return render(request,'DIETITION\dietitionuser.html')    
+    def get(self,request, i_id):
+        obj=BMI.objects.filter(USER_id=i_id)
+        return render(request,'DIETITION/dietitionuser.html',{'val':obj})    
     
 class Logind(View):
     def get(self,request):
@@ -268,18 +284,27 @@ class Logint(View):
     
 
 class Bookingt(View):
-    def get(self,request):
+    def get(self,request ):
         obj=BookingtTable.objects.all()
         return render(request,'TRAINER/bookingt.html',{'val':obj})    
     
 
 class Trainerhome(View):
     def get(self,request):
-        return render(request,'TRAINER/trainerhome.html')   
+        obj=UserTable.objects.filter(LOGINID__type='user').count()
+        obj1 = BookingtTable.objects.all().count()
+        obj2=TrainerTable.objects.filter(LOGIN__type='trainer').count()
+        obj3=UserTable.objects.filter(LOGINID__type='products').count()
+        print(obj,obj1,obj2,obj3)
+
+        
+        return render(request,'TRAINER/trainerhome.html',{'val':obj,'val1':obj1,'val2':obj2, 'val3':obj3}) 
         
 
 class Traineruser(View):
-    def get(self,request):
+    def get(self,request, i_id):
+        obj=BMI.objects.filter(USER_id=i_id)
+
         return render(request,'TRAINER/traineruser.html')   
 
 

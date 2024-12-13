@@ -1,14 +1,28 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback</title>
-    <link rel="stylesheet" href="notification.css"></link>
+    <link rel="stylesheet" href="{% static 'css/verify.css' %}"></link>
 </head>
 <body>
-    
+    <header class="bar">
+        <div class="logo">
+          <a href="#">Fittrack</a>
+        </div>
+        <nav class="nav">
+          <ul>
+              <li><a href="/Adminhome/">Home</a></li>
+          </ul>
+      </nav>
+      </header>
+      <div class="main">
     <table border="1">
+        <h2>Feedbacks</h2>
         <tr>
             
             <th>USER</th>
@@ -16,6 +30,7 @@
             <th>reply</th>
             <th>created_at</th>
             <th>updated_at</th>
+            <th>Action</th>
             
 
         </tr>
@@ -28,8 +43,10 @@
         <td>{{i.created_at}}</td>
         <td>{{i.updated_at}}</td>
     <td><a href="/Feedbackreply/{{i.id}}">reply</a> </td>
+    <td><a href="/Feedbackreply/{{i.id}}" class="green">reply</a> </td>
     </tr>
     {%endfor%}
     </table>
+</div>
 </body>
 </html>
