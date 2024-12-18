@@ -1,10 +1,13 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Complaint</title>
-    <link rel="stylesheet" href="notification.css"></link>
+    <link rel="stylesheet" href="{% static 'css/verify.css' %}"></link>
 </head>
 <body>
     
@@ -24,7 +27,7 @@
         <!-- <td></td>
         <td></td>
         <td></td> -->
-        <td>{{i.id}}</td>
+        <td>{{i.id.name}}</td>
         <td>{{i.complaint}}</td>
         <td>{{i.reply}}</td>
     

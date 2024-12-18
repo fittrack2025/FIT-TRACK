@@ -44,7 +44,11 @@ urlpatterns = [
     path('Bookingt/',Bookingt.as_view()),
     path('Trainerhome/',Trainerhome.as_view()),
     path('Traineruser/<int:i_id>/',Traineruser.as_view()),
-    path('Managepost/',Managepost.as_view())
+    path('Managepost/',Managepost.as_view()),
+    # path('Editpost/<int:pk>/',Editpost.as_view())
+    path('Addpost/',Addpost.as_view()),
+
+
 
 
 

@@ -13,12 +13,12 @@
 <body>
     <header class="bar">
         <div class="logo">
-          <a href="#">Fittrack</a>
+          <a href="/Adminhome/">Fittrack</a>
         </div>
         <nav class="nav">
-          <ul>
-              <li><a href="/Adminhome/">Home</a></li>
-          </ul>
+          <!-- <ul>
+              <li><a href="#">Home</a></li>
+          </ul> -->
       </nav>
       </header>
 <div class="main">
@@ -45,9 +45,9 @@
             <td>{{i.certificate}}</td>
             <td>{{i.email}}</td>
             <td>
-                <a href="/app/Accept_Trainer/{{i.id}}" class="green">Accept</a> 
+                <a href="/Accept_Trainer/{{i.id}}" class="green">Accept</a> 
                 
-                <a href="/app/Reject_Trainer/{{i.id}}" onclick="return confirm('are you sure you want to reject the trainer')" class="red">Reject</a>
+                <a href="/Reject_Trainer/{{i.id}}" onclick="return confirm('are you sure you want to reject the trainer')" class="red">Reject</a>
             </td>
         
         </tr>

@@ -12,6 +12,7 @@ class LoginTable(models.Model):
     username=models.CharField(max_length=30, blank=True,null=True)
     password=models.CharField(max_length=30, blank=True,null=True)
     type=models.CharField(max_length=30, blank=True,null=True)
+
     # status=models.CharField(max_length=30, blank=True,null=True)
     
 class UserTable(models.Model):
@@ -89,7 +90,7 @@ class RatingTable(models.Model):
 
 
 class PostTable(models.Model):
-    TRAINER=models.ForeignKey(TrainerTable,on_delete=models.CASCADE)
+    TRAINER=models.ForeignKey(LoginTable,on_delete=models.CASCADE,null=True,blank=True)
     name= models.CharField(max_length=30, blank=True,null=True)
     video= models.FileField(upload_to='training_videos/', blank=True,null=True)
     description= models.CharField(max_length=300, blank=True,null=True) 

@@ -12,12 +12,12 @@
 <body>
     <header class="bar">
       <div class="logo">
-        <a href="#">Fittrack</a>
+        <a href="/Adminhome/">Fittrack</a>
       </div>
       <nav class="nav">
         <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Notification</a></li>
+            <li><a href="/Adminhome/">Home</a></li>
+            <!-- <li><a href="#">Notification</a></li> -->
         </ul>
     </nav>
     </header>
@@ -44,10 +44,11 @@
             <td>{{i.age}}</td>
             <td>{{i.phone}}</td>
             <td>{{i.email}}</td>
-
-            <a href="/app/Accept_Trainer/{{i.id}}" class="green">Accept</a> 
+            <td>
+            <a href="/Accept_User/{{i.id}}" class="green">Accept</a> 
                 
-            <a href="/app/Reject_Trainer/{{i.id}}" onclick="return confirm('are you sure you want to reject the dietition')" class="red">Reject</a>      
+            <a href="/Reject_User/{{i.id}}" onclick="return confirm('are you sure you want to reject the dietition')" class="red">Reject</a>      
+            </td>
         </tr>
         
         {% endfor %}

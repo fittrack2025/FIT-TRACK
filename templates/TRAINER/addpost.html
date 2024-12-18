@@ -1,0 +1,35 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage podt</title>
+    <link rel="stylesheet" href="{% static 'css/verify.css' %}">
+
+</head>
+<body>
+    
+    
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <!-- Name Field -->
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <!-- Video Field -->
+        <label for="video">Video:</label><br>
+        <input type="file" id="video" name="video" accept="video/*" required><br><br>
+
+        <!-- Description Field -->
+        <label for="description">Description:</label><br>
+        <textarea id="description" name="description" rows="4" cols="50" required></textarea><br><br>
+
+        <!-- Submit Button -->
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
+

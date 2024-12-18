@@ -1,9 +1,14 @@
+{% load static %}
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Manage podt</title>
+    <link rel="stylesheet" href="{% static 'css/verify.css' %}">
+
 </head>
 <body>
     <table border="1">
@@ -11,14 +16,24 @@
             <th>name</th>
             <th>video</th>
             <th>description</th>
-            <th>add&edit</th>
+            <!-- <th>edit</th> -->
         </tr>
+        {%for i in val%}
         <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td><button type="button">add</button><button type="button">edit</button></td>
+            <td>{{i.name}}</td>
+            <td><video controls>
+                <source src="{{i.video.url}}" type="video/mp4">
+            </video></td>
+            <td>{{i.description}}</td>
+            <!-- <td>
+                <a href="/Editpost/{{i.id}}" class="green">EDIT</a>  -->
+
         </tr>
+        {% endfor %}
+        <br>
+        <br>
+        <a href="/Addpost" class="green">ADD</a> 
+        
     </table>
 
 </body>

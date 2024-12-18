@@ -20,6 +20,7 @@ class Login(View):
         username = request.POST['username']
         password = request.POST['password']
         Login_obj = LoginTable.objects.get(username=username,password=password)
+        request.session['lid']=Login_obj.id
         print(Login_obj)
         if Login_obj.type == "admin":
          return HttpResponse('''<script>alert("Welcome to Admin panel");window.location = "/Adminhome"</script>''')  
@@ -37,8 +38,9 @@ class Login(View):
 class Adminhome(View):
     def get(self,request):
         obj=UserTable.objects.filter(LOGINID__type='user').count()
-        obj1=UserTable.objects.filter(LOGINID__type='dietition').count()
-        obj2=UserTable.objects.filter(LOGINID__type='trainer').count()
+        obj1=DietitionTable.objects.filter(LOGIN__type='Dietition').count()
+        print(obj1)
+        obj2=TrainerTable.objects.filter(LOGIN__type='Trainer').count()
         
         return render(request,'ADMINISTRATOR/adminhome.html',{'val':obj,'val1':obj1,'val2':obj2})
         
@@ -109,9 +111,9 @@ class Reply(View):
 class Verifydietition(View):
     def get(self,request):
         obj=DietitionTable.objects.filter(LOGIN__type='pending')
-        print(obj)
+        print("%%%%%%%%%%%%%%%%%%%%%%%%%%",obj)
         obj1=DietitionTable.objects.filter(LOGIN__type='Dietition')
-        print(obj1)
+        print("########################",obj1)
 
         return render(request,'ADMINISTRATOR/verifydietiton.html',{'val':obj,'val1':obj1})
     
@@ -196,7 +198,7 @@ class Dietitionhome(View):
     def get(self,request):
         obj=UserTable.objects.filter(LOGINID__type='user').count()
         obj1 = BookingdTable.objects.all().count()
-        obj2=UserTable.objects.filter(LOGINID__type='trainer').count()
+        obj2=TrainerTable.objects.filter(LOGIN__type='Trainer').count()
         obj3=UserTable.objects.filter(LOGINID__type='products').count()
         print(obj,obj1,obj2,obj3)
 
@@ -293,7 +295,7 @@ class Trainerhome(View):
     def get(self,request):
         obj=UserTable.objects.filter(LOGINID__type='user').count()
         obj1 = BookingtTable.objects.all().count()
-        obj2=TrainerTable.objects.filter(LOGIN__type='trainer').count()
+        obj2=PostTable.objects.all().count()
         obj3=UserTable.objects.filter(LOGINID__type='products').count()
         print(obj,obj1,obj2,obj3)
 
@@ -311,7 +313,47 @@ class Traineruser(View):
 class Managepost(View):
     def get(self,request):
         obj=PostTable.objects.all()
-        return render(request,'TRAINER/managepost.html',{'val':obj})    
+        return render(request,'TRAINER/managepost.html',{'val':obj})
+
+# class Editpost(View):
+#     def get(self,request,pk):
+#         obj=PostTable.objects.get(pk=pk) 
+#         return render(request,'TRAINER/editpost.html',{'val':obj})
+
+
+
+class Addpost(View):
+    def get(self, request):
+        obj = PostTable.objects.all()  # Fetch all posts (if needed)
+        return render(request, 'TRAINER/addpost.html', {'val': obj})
+
+    def post(self, request):
+        # Retrieve the trainer ID from session (assuming it's stored in session as 'lid')
+        trainer_id = request.session.get('lid')
+        name = request.POST['name']
+        video = request.FILES['video']
+        description = request.POST['description']
+        
+        # Fetch the corresponding LoginTable (Trainer) object using the session ID
+        try:
+            trainer = LoginTable.objects.get(id=trainer_id)  # Fetch the LoginTable object
+        except LoginTable.DoesNotExist:
+            return HttpResponse('<script>alert("Trainer not found!");window.location="/Managepost/"</script>')
+
+        # Create a new PostTable object and assign the fields
+        obj = PostTable()
+        obj.name = name
+        obj.TRAINER = trainer  # Assign the trainer (LoginTable object) to the foreign key field
+        obj.video = video
+        obj.description = description
+        
+        # Save the object to the database
+        obj.save()
+        
+        # Return a success message
+        return HttpResponse('''<script>alert("Added new post");window.location="/Managepost/"</script>''')
+
+
  
 class Complaints(View):
     def get(self,request):
@@ -324,9 +366,11 @@ class Reply(View):
         obj=ComplaintTable.objects.get(pk=pk)
         return render(request,'ADMINISTRATOR/reply.html',{'val':obj} ) 
     def post(self,request,pk):
+      
         obj=ComplaintTable.objects.get(pk=pk)
         reply=request.POST['reply']
         obj.reply=reply
+       
         obj.save()
         return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''')  
 
