@@ -51,5 +51,13 @@ urlpatterns = [
 
 
 
+    #////////////////////////////////API////////////////
+
+
+    path('LoginPage',LoginPage.as_view(),name='LoginPage')
+
+
+
+
 
 ]

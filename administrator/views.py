@@ -1,12 +1,20 @@
 from http.client import HTTPResponse
+from urllib import request
 from django.shortcuts import redirect, render
 
 # Create your views here.
 from django.views import View
+
+from administrator.serializer import LoginSerializer, UserSerializer
 from .models import *
 from django.contrib.auth import authenticate
 from django.contrib import messages
 from django.http import HttpResponse
+from rest_framework.views import APIView
+
+
+from rest_framework import status
+from rest_framework.response import Response
 
 
 
@@ -374,3 +382,129 @@ class Reply(View):
         obj.save()
         return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''')  
 
+# /////////////////////////////////////// USER API //////////////////////////////////////////////////
+
+
+class ViewTrainerAPI(APIView):
+     def get(self,request):
+        trainer=TrainerTable.objects.all()
+        trainer_serializer=TrainerSerializer(trainer,may=True)
+        return Response(trainer_serializer.data)
+
+
+
+class ViewWorkoutstatusAPI(APIView):
+     def get(self,request):
+        Workoutstatus=PostTable.objects.all()
+        Workoutstatus_serializer=WorkoutstatusSerializer(Workoutstatus,may=True)
+        return Response(Workoutstatus_serializer.data)
+
+class ViewDietitionAPI(APIView):
+     def get(self,request):
+        Dietition=DietitionTable.objects.all()
+        Dietition_serializer=DietitionSerializer(Dietitionr,may=True)
+       
+        return Response(Dietition.data)        
+
+
+class ViewPostsAPI(APIView):
+     def get(self,request):
+        Posts=PostTable.objects.all()
+        Posts_serializer=PostsSerializer(Posts,may=True)
+       
+        return Response(Posts.data)    
+
+     
+         
+# class ViewDietchartsAPI(APIView):
+#      def get(self,request):
+#         Dietcharts=FoodTable.objects.all()
+#         Dietcharts_serializer=DietchartsSerializer(Dietcharts,may=True)
+#         print("---------------->Dietcharts images"Dietcharts_serializer)
+#         return Response(Dietcharts.data)
+
+
+# class ViewRewardsAPI(APIView):
+#      def get(self,request):
+#         Rewards=.objects.all()
+#         Rewards_serializer=RewardsSerializer(Rewards,may=True)
+#         print("---------------->Rewards images"Rewards_serializer)
+#         return Response(Rewards.data)       
+
+
+class Userreg(APIView):
+    
+    def post(self, request):
+        # Print the request data (for debugging purposes)
+        print("#################", request.data)
+
+        # Initialize serializers with request data
+        user_serial = UserSerializer(data=request.data)
+        login_serial = LoginSerializer(data=request.data)
+        
+        # Validate both serializers
+        data_valid = user_serial.is_valid()
+        login_valid = login_serial.is_valid()
+
+        # Check if both validations passed
+        if data_valid and login_valid:
+            print("&&&&&&&&&&&&&&&&&&")
+
+            # Extract password and save login profile
+            password = request.data['password']
+            login_profile = login_serial.save(user_type='USER', password=password)
+
+            # Save the user with the login profile
+            user_serial.save(LOGIN=login_profile)
+
+            # Return successful response with user data
+            return Response(user_serial.data, status=status.HTTP_201_CREATED)
+
+        # If validation failed, return error details
+        return Response({
+            'login_error': login_serial.errors if not login_valid else None,
+            'user_error': user_serial.errors if not data_valid else None
+        }, status=status.HTTP_400_BAD_REQUEST)
+    
+
+
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from .models import LoginTable
+
+class LoginPage(APIView):
+    def post(self, request):
+        response_dict = {}
+
+        # Get data from the request
+        username = request.data.get("username")
+        print(username)
+        password = request.data.get("password")
+        print(password)
+        
+        # Validate input: ensure both username and password are provided
+        if not username or not password:
+            response_dict["message"] = "Both username and password are required."
+            return Response(response_dict, status=HTTP_400_BAD_REQUEST)
+
+        # Fetch the user from LoginTable
+        try:
+            t_user = LoginTable.objects.get(username=username)
+        except LoginTable.DoesNotExist:
+            response_dict["message"] = "User not found."
+            return Response(response_dict, status=HTTP_401_UNAUTHORIZED)
+
+        # Check password using check_password
+        # Uncomment the following line if you want to enable password checking
+        # if not check_password(password, t_user.password):
+        #     response_dict["message"] = "Incorrect password."
+        #     return Response(response_dict, status=HTTP_401_UNAUTHORIZED)
+
+        # Build the response dictionary
+        response_dict["message"] = "success"
+        response_dict["login_id"] = t_user.id  
+
+        # Return the response
+        return Response(response_dict, status=HTTP_200_OK)

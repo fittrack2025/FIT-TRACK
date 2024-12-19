@@ -110,6 +110,7 @@ class BMI(models.Model):
     
 class FoodTable(models.Model):
     DIETITIAN= models.ForeignKey(DietitionTable, on_delete=models.CASCADE)
+    # dietchart=models.CharField(max_length=30, blank=True,null=True)
     foodname= models.CharField(max_length=30, blank=True,null=True)
     receipe= models.CharField(max_length=500, blank=True,null=True)
 
