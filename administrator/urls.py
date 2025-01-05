@@ -1,4 +1,4 @@
-from django.urls import path,include
+from django.urls import path
 from.views import *
 
 urlpatterns = [
@@ -45,7 +45,8 @@ urlpatterns = [
     path('Trainerhome/',Trainerhome.as_view()),
     path('Traineruser/<int:i_id>/',Traineruser.as_view()),
     path('Managepost/',Managepost.as_view()),
-    # path('Editpost/<int:pk>/',Editpost.as_view())
+    path('Editpost/<int:pk>/',Editpost.as_view()),
+    path('deletep/<int:pk>/',DeletePost.as_view()),
     path('Addpost/',Addpost.as_view()),
 
 
@@ -54,7 +55,17 @@ urlpatterns = [
     #////////////////////////////////API////////////////
 
 
-    path('LoginPage',LoginPage.as_view(),name='LoginPage')
+    path('LoginPage',LoginPage.as_view(),name='LoginPage'),
+    path('register',Userreg.as_view(),name='register'),
+    path('ViewTrainerAPI',ViewTrainerAPI.as_view(),name='ViewTrainerAPI'),
+    path('ViewDietitionAPI',ViewDietitionAPI.as_view(),name='ViewDietitionAPI'),
+    path('ViewPostsAPI', ViewPostsAPI.as_view(), name='ViewPostsAPI'),
+    path('ViewProfileAPI/<int:id>',UserProfileView.as_view(),name='ViewProfileAPI'),
+    path('ViewPostAPIbytrainerid/<int:id>',ViewPostAPIbytrainerid.as_view(),name='ViewPostAPIbytrainerid'),
+    path('ViewPostnamedescriptionAPIbytrainerid/<int:id>',ViewPostnamedescriptionAPIbytrainerid.as_view(),name='ViewPostnamedescriptionAPIbytrainerid'),
+    path('ViewPostAPIbytraineridday/<int:id>/<int:day>',ViewPostAPIbytraineridday.as_view(),name='ViewPostAPIbytraineridday'),
+     path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
+     path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
 
 
 

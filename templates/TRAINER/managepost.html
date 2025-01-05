@@ -16,18 +16,21 @@
             <th>name</th>
             <th>video</th>
             <th>description</th>
+            <th>day</th>
             <!-- <th>edit</th> -->
         </tr>
         {%for i in val%}
         <tr>
             <td>{{i.name}}</td>
-            <td><video controls>
-                <source src="{{i.video.url}}" type="video/mp4">
+            <td><video  controls width="200" height="120">
+                <source src="{{i.videos.url}}" type="video/mp4" >
             </video></td>
             <td>{{i.description}}</td>
-            <!-- <td>
-                <a href="/Editpost/{{i.id}}" class="green">EDIT</a>  -->
-
+            <td>{{i.workoutday}}</td>
+            <td>
+                <a href="/Editpost/{{i.id}}" class="green">EDIT</a>
+                <a href="/deletep/{{i.id}}" class="green">delete</a>
+            </td>
         </tr>
         {% endfor %}
         <br>

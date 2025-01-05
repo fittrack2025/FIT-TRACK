@@ -5,7 +5,8 @@ from django.shortcuts import redirect, render
 # Create your views here.
 from django.views import View
 
-from administrator.serializer import LoginSerializer, UserSerializer
+from administrator.serializer import *
+from .form import Edit_post
 from .models import *
 from django.contrib.auth import authenticate
 from django.contrib import messages
@@ -15,6 +16,12 @@ from rest_framework.views import APIView
 
 from rest_framework import status
 from rest_framework.response import Response
+
+
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
+from .models import LoginTable
 
 
 
@@ -323,10 +330,23 @@ class Managepost(View):
         obj=PostTable.objects.all()
         return render(request,'TRAINER/managepost.html',{'val':obj})
 
-# class Editpost(View):
-#     def get(self,request,pk):
-#         obj=PostTable.objects.get(pk=pk) 
-#         return render(request,'TRAINER/editpost.html',{'val':obj})
+class Editpost(View):
+    def get(self,request,pk):
+        obj=PostTable.objects.get(pk=pk) 
+        return render(request,'TRAINER/editPost.html',{'val':obj})
+
+    def post(get, request, pk):
+        obj=PostTable.objects.get(pk=pk) 
+        c = Edit_post(request.POST, request.FILES, instance=obj)
+        if c.is_valid():
+            c.save()
+            return HttpResponse('<script>alert("updated!");window.location="/Managepost/"</script>')
+        
+class DeletePost(View):
+    def get(self, request, pk):
+        obj=PostTable.objects.get(pk=pk) 
+        obj.delete()
+        return HttpResponse('<script>alert("deleted!");window.location="/Managepost/"</script>')
 
 
 
@@ -339,8 +359,10 @@ class Addpost(View):
         # Retrieve the trainer ID from session (assuming it's stored in session as 'lid')
         trainer_id = request.session.get('lid')
         name = request.POST['name']
+        type = request.POST['type']
         video = request.FILES['video']
         description = request.POST['description']
+        workoutday = request.POST['workoutday']
         
         # Fetch the corresponding LoginTable (Trainer) object using the session ID
         try:
@@ -351,9 +373,11 @@ class Addpost(View):
         # Create a new PostTable object and assign the fields
         obj = PostTable()
         obj.name = name
+        obj.type = type
         obj.TRAINER = trainer  # Assign the trainer (LoginTable object) to the foreign key field
-        obj.video = video
+        obj.videos = video
         obj.description = description
+        obj.workoutday = workoutday
         
         # Save the object to the database
         obj.save()
@@ -380,40 +404,96 @@ class Reply(View):
         obj.reply=reply
        
         obj.save()
-        return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''')  
+        return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''') 
+
+
+
 
 # /////////////////////////////////////// USER API //////////////////////////////////////////////////
 
 
 class ViewTrainerAPI(APIView):
      def get(self,request):
+        Response_dict = {}
         trainer=TrainerTable.objects.all()
-        trainer_serializer=TrainerSerializer(trainer,may=True)
-        return Response(trainer_serializer.data)
+        trainer_serializer=TrainerSerializer(trainer,many=True)
+        Dietition=DietitionTable.objects.all()
+        Dietition_serializer=DietitionSerializer(Dietition,many=True)
+
+        Response_dict={
+            'trainer':trainer_serializer.data,
+            'dietition':Dietition_serializer.data
+        }
+        return Response(Response_dict)
 
 
 
 class ViewWorkoutstatusAPI(APIView):
      def get(self,request):
         Workoutstatus=PostTable.objects.all()
-        Workoutstatus_serializer=WorkoutstatusSerializer(Workoutstatus,may=True)
+        Workoutstatus_serializer=WorkoutstatusSerializer(Workoutstatus,many=True)
         return Response(Workoutstatus_serializer.data)
 
 class ViewDietitionAPI(APIView):
      def get(self,request):
         Dietition=DietitionTable.objects.all()
-        Dietition_serializer=DietitionSerializer(Dietitionr,may=True)
+        Dietition_serializer=DietitionSerializer(Dietition,many=True)
        
-        return Response(Dietition.data)        
+        return Response(Dietition_serializer.data)        
 
 
 class ViewPostsAPI(APIView):
      def get(self,request):
         Posts=PostTable.objects.all()
-        Posts_serializer=PostsSerializer(Posts,may=True)
-       
-        return Response(Posts.data)    
+        Posts_serializer=Postserializer1(Posts,many=True)
+        print("$$$$$$$$$$$$$$$$$$$", Posts_serializer)
+        return Response(Posts_serializer.data)    
+class ViewPostAPIbytrainerid(APIView):
+    def get(self, request,id, *args, **kwargs):
+        # Fetch data from PostTable
+        posts = PostTable.objects.filter(TRAINER__id=id).all()
+        
+        # Serialize the data
+        serialized_data = Postserializer2(posts, many=True).data
+        
+        # Transform the data to desired output format
+        grouped_data = {}
+        for post in serialized_data:
+            workoutday = post['workoutday']
+            type_ = post['type']
 
+            if (workoutday, type_) not in grouped_data:
+                grouped_data[(workoutday, type_)] = {
+                    "workoutday": workoutday,
+                    "type": type_,
+                    "videos": []
+                }
+
+            grouped_data[(workoutday, type_)]["videos"].append({
+                "name": post['name'],
+                "videos": post['videos'],
+                "description": post['description'],
+                "workoutday": post['workoutday'],
+                "type": post['type'],
+                "trainer_id": post['trainer_id']
+            })
+
+        # Format the grouped data as a list of dictionaries
+        output = list(grouped_data.values())
+
+        return Response(output)
+class ViewPostAPIbytraineridday(APIView):
+    def get(self,request,id,day):
+        Posts=PostTable.objects.filter(TRAINER__id=id,workoutday=day).all()
+        Posts_serializer=Postserializer1(Posts,many=True)
+        print("$$$$$$$$$$$$$$$$$$$", Posts_serializer)
+        return Response(Posts_serializer.data)  
+class ViewPostnamedescriptionAPIbytrainerid(APIView):
+    def get(self,request,id):
+        Posts=PostTable.objects.filter(TRAINER__id=id).all()
+        Posts_serializer=Postserializer2(Posts,many=True)
+        print("$$$$$$$$$$$$$$$$$$$", Posts_serializer)
+        return Response(Posts_serializer.data)  
      
          
 # class ViewDietchartsAPI(APIView):
@@ -433,29 +513,33 @@ class ViewPostsAPI(APIView):
 
 
 class Userreg(APIView):
-    
     def post(self, request):
         # Print the request data (for debugging purposes)
+        print("#################")
         print("#################", request.data)
 
         # Initialize serializers with request data
         user_serial = UserSerializer(data=request.data)
         login_serial = LoginSerializer(data=request.data)
-        
         # Validate both serializers
         data_valid = user_serial.is_valid()
         login_valid = login_serial.is_valid()
-
+        trainer_id= request.data.get('trainerid')
+        dietition_id= request.data.get('dietitionid')
+        print("^^^^^^^^^^^^^^^^^^^^^", trainer_id)
+        print("^^^^^^^^^^^^^^^^^^^^^", dietition_id)
+        trainer = TrainerTable.objects.get(id=trainer_id)
+        dietition = DietitionTable.objects.get(id=dietition_id)
         # Check if both validations passed
         if data_valid and login_valid:
             print("&&&&&&&&&&&&&&&&&&")
 
             # Extract password and save login profile
-            password = request.data['password']
-            login_profile = login_serial.save(user_type='USER', password=password)
+
+            login_profile = login_serial.save(type='USER')
 
             # Save the user with the login profile
-            user_serial.save(LOGIN=login_profile)
+            user_serial.save(LOGINID=login_profile, trainerid=trainer, dietitionid=dietition)
 
             # Return successful response with user data
             return Response(user_serial.data, status=status.HTTP_201_CREATED)
@@ -469,10 +553,6 @@ class Userreg(APIView):
 
 
 
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_401_UNAUTHORIZED
-from .models import LoginTable
 
 class LoginPage(APIView):
     def post(self, request):
@@ -491,7 +571,7 @@ class LoginPage(APIView):
 
         # Fetch the user from LoginTable
         try:
-            t_user = LoginTable.objects.get(username=username)
+            t_user = LoginTable.objects.get(username=username,password=password)
         except LoginTable.DoesNotExist:
             response_dict["message"] = "User not found."
             return Response(response_dict, status=HTTP_401_UNAUTHORIZED)
@@ -508,3 +588,109 @@ class LoginPage(APIView):
 
         # Return the response
         return Response(response_dict, status=HTTP_200_OK)
+    
+
+
+class UserProfileView(APIView):
+    """
+    API View to retrieve a user's profile.
+    """
+    def get(self, request,id):
+        try:
+            print("#####################")
+            # Get the user from the request (assuming authentication is implemented)
+            
+            # Fetch the associated user profile
+            user_profile = UserTable.objects.filter(LOGINID__id=id).first()
+            print("sdfg",user_profile)
+
+            
+            if not user_profile:
+                return Response(
+                    {"message": "Profile not found for the logged-in user."},
+                    status=status.HTTP_404_NOT_FOUND
+                )
+            
+            # Serialize the profile data
+            serialized_data = UserSerializer(user_profile).data
+            print(serialized_data)
+            
+            # Return the profile data
+            return Response(
+                serialized_data,
+                status=status.HTTP_200_OK
+            )
+        
+        except Exception as e:
+            return Response(
+                {"message": "An error occurred while retrieving the profile.", "error": str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+    # def post(self,request,id):
+    #         user_profile = UserTable.objects.filter(LOGINID__id=id).first()
+            
+
+
+
+class ChatAPIView(APIView):
+
+    def get(self, request,sender_id,receiver_id):
+        """
+        Get all chat messages between the logged-in user and a specific user.
+        """
+        user = request.user
+        
+        if not receiver_id:
+            return Response({"error": "receiver_id is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            receiver = LoginTable.objects.get(id=receiver_id)
+        except LoginTable.DoesNotExist:
+            return Response({"error": "Receiver does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        chats = Chat.objects.filter(
+            (models.Q(sender=sender_id) & models.Q(receiver=receiver_id)) |
+            (models.Q(sender=receiver_id) & models.Q(receiver=sender_id))
+        ).order_by('timestamp')
+
+        serializer = ChatSerializer(chats, many=True)
+        return Response(serializer.data)
+
+    def post(self, request,sender_id,receiver_id):
+        """
+        Send a chat message from the logged-in user to a specific receiver.
+        """
+        user = sender_id
+        receiver_id=receiver_id
+        data = request.data
+        data['sender'] = user 
+        data['receiver']= receiver_id# Set the sender to the logged-in user
+
+        serializer = ChatSerializer(data=data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ChattedUsersAPIView(APIView):
+    # permission_classes = [IsAuthenticated]
+
+    def get(self, request,userid):
+        """
+        Get a list of users the logged-in user has chatted with.
+        """
+        user = userid  # Logged-in user
+        
+        # Fetch all users the logged-in user has sent or received messages with
+        sent_chats = Chat.objects.filter(sender=user).values_list('receiver', flat=True)
+        received_chats = Chat.objects.filter(receiver=user).values_list('sender', flat=True)
+        
+        # Combine and get unique user IDs
+        chatted_user_ids = set(sent_chats) | set(received_chats)
+        
+        # Fetch user details for these IDs
+        chatted_users = LoginTable.objects.filter(id__in=chatted_user_ids)
+        
+        # Serialize the user details
+        serializer = ChattedUsersSerializer(chatted_users, many=True)
+        
+        return Response(serializer.data)
