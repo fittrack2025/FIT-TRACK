@@ -352,7 +352,8 @@ class DeletePost(View):
 
 class Addpost(View):
     def get(self, request):
-        obj = PostTable.objects.all()  # Fetch all posts (if needed)
+        # Fetch all posts (if needed)
+        obj = PostTable.objects.all()
         return render(request, 'TRAINER/addpost.html', {'val': obj})
 
     def post(self, request):
@@ -363,27 +364,27 @@ class Addpost(View):
         video = request.FILES['video']
         description = request.POST['description']
         workoutday = request.POST['workoutday']
-        
-        # Fetch the corresponding LoginTable (Trainer) object using the session ID
+
+        # Fetch the corresponding TrainerTable object using the session ID
         try:
-            trainer = LoginTable.objects.get(id=trainer_id)  # Fetch the LoginTable object
-        except LoginTable.DoesNotExist:
+            trainer = TrainerTable.objects.get(LOGIN=trainer_id)  # Fetch the TrainerTable object
+        except TrainerTable.DoesNotExist:
             return HttpResponse('<script>alert("Trainer not found!");window.location="/Managepost/"</script>')
 
         # Create a new PostTable object and assign the fields
         obj = PostTable()
         obj.name = name
         obj.type = type
-        obj.TRAINER = trainer  # Assign the trainer (LoginTable object) to the foreign key field
+        obj.TRAINER = trainer  # Assign the trainer (TrainerTable object) to the foreign key field
         obj.videos = video
         obj.description = description
         obj.workoutday = workoutday
-        
+
         # Save the object to the database
         obj.save()
-        
+
         # Return a success message
-        return HttpResponse('''<script>alert("Added new post");window.location="/Managepost/"</script>''')
+        return HttpResponse('<script>alert("Post added!");window.location="/Managepost/"</script>')
 
 
  
@@ -426,7 +427,32 @@ class ViewTrainerAPI(APIView):
         }
         return Response(Response_dict)
 
+class SubmitFeedback(APIView):
+    def post(self, request):
+        # Print the request data (for debugging purposes)
+        print("#################", request.data)
+        user_id=request.data.get('user_id')
+        user_obj = UserTable.objects.get(id=user_id)
+        serial = FeedbackSerializer(data=request.data)
+        if serial.is_valid():
+            serial.save(USER=user_obj)
+            return Response(serial.data, status=status.HTTP_201_CREATED)
 
+class submitcomplaint(APIView):
+    def post(self, request):
+        # Print the request data (for debugging purposes)
+        print("#################", request.data)
+        user_id=request.data.get('user_id')
+        user_obj = UserTable.objects.get(id=user_id)
+        serial = ComplaintSerializer(data=request.data)
+        if serial.is_valid():
+            serial.save(USER=user_obj, repy="pending")
+            return Response(serial.data, status=status.HTTP_201_CREATED)
+
+        # If validation failed, return error details
+    
+    
+   
 
 class ViewWorkoutstatusAPI(APIView):
      def get(self,request):
@@ -447,7 +473,8 @@ class ViewPostsAPI(APIView):
         Posts=PostTable.objects.all()
         Posts_serializer=Postserializer1(Posts,many=True)
         print("$$$$$$$$$$$$$$$$$$$", Posts_serializer)
-        return Response(Posts_serializer.data)    
+        return Response(Posts_serializer.data)  
+       
 class ViewPostAPIbytrainerid(APIView):
     def get(self, request,id, *args, **kwargs):
         # Fetch data from PostTable
@@ -482,6 +509,7 @@ class ViewPostAPIbytrainerid(APIView):
         output = list(grouped_data.values())
 
         return Response(output)
+    
 class ViewPostAPIbytraineridday(APIView):
     def get(self,request,id,day):
         Posts=PostTable.objects.filter(TRAINER__id=id,workoutday=day).all()
@@ -592,19 +620,12 @@ class LoginPage(APIView):
 
 
 class UserProfileView(APIView):
-    """
-    API View to retrieve a user's profile.
-    """
     def get(self, request,id):
         try:
-            print("#####################")
-            # Get the user from the request (assuming authentication is implemented)
-            
-            # Fetch the associated user profile
-            user_profile = UserTable.objects.filter(LOGINID__id=id).first()
+            print("###########profileeeeee ##########", id)
+            user_profile = UserTable.objects.filter(LOGINID_id=id).first()
             print("sdfg",user_profile)
 
-            
             if not user_profile:
                 return Response(
                     {"message": "Profile not found for the logged-in user."},
@@ -630,14 +651,36 @@ class UserProfileView(APIView):
     #         user_profile = UserTable.objects.filter(LOGINID__id=id).first()
             
 
+class EditProfile(APIView):
+    def post(self, request):
+        # Print the request data (for debugging purposes)
+        print("#################")
+        print("#################", request.data)
+        user_id = request.data.get('id')
+        try:
+            # Retrieve the user by ID
+            user = UserTable.objects.get(id=user_id)
+        except UserTable.DoesNotExist:
+            return Response({'error': 'User not found'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Initialize the serializer with the current user data and the new data from the request
+        user_serial = UserSerializer(user, data=request.data, partial=True)  # Use partial=True to allow partial updates
+
+        # Validate the serializer
+        if user_serial.is_valid():
+            # Save the updated user profile
+            user_serial.save()
+            # Return successful response with updated user data
+            return Response(user_serial.data, status=status.HTTP_200_OK)
+
+        # If validation failed, return error details
+        return Response(user_serial.errors, status=status.HTTP_400_BAD_REQUEST)
+        
 
 
 class ChatAPIView(APIView):
 
     def get(self, request,sender_id,receiver_id):
-        """
-        Get all chat messages between the logged-in user and a specific user.
-        """
         user = request.user
         
         if not receiver_id:

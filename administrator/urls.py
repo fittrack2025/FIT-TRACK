@@ -57,15 +57,18 @@ urlpatterns = [
 
     path('LoginPage',LoginPage.as_view(),name='LoginPage'),
     path('register',Userreg.as_view(),name='register'),
+    path('submitfeedback',SubmitFeedback.as_view(),name='submitfeedback'),
+    path('submitcomplaint',submitcomplaint.as_view(),name='submitcomplaint'),
     path('ViewTrainerAPI',ViewTrainerAPI.as_view(),name='ViewTrainerAPI'),
     path('ViewDietitionAPI',ViewDietitionAPI.as_view(),name='ViewDietitionAPI'),
     path('ViewPostsAPI', ViewPostsAPI.as_view(), name='ViewPostsAPI'),
     path('ViewProfileAPI/<int:id>',UserProfileView.as_view(),name='ViewProfileAPI'),
+    path('EditProfile',EditProfile.as_view(),name='EditProfile'),
     path('ViewPostAPIbytrainerid/<int:id>',ViewPostAPIbytrainerid.as_view(),name='ViewPostAPIbytrainerid'),
     path('ViewPostnamedescriptionAPIbytrainerid/<int:id>',ViewPostnamedescriptionAPIbytrainerid.as_view(),name='ViewPostnamedescriptionAPIbytrainerid'),
     path('ViewPostAPIbytraineridday/<int:id>/<int:day>',ViewPostAPIbytraineridday.as_view(),name='ViewPostAPIbytraineridday'),
-     path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
-     path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
+    path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
+    path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
 
 
 

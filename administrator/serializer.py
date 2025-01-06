@@ -1,4 +1,4 @@
-from .models import Chat, DietitionTable, LoginTable, PostTable, TrainerTable, UserTable
+from .models import *
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
@@ -7,7 +7,7 @@ from rest_framework import serializers
 class UserSerializer(ModelSerializer):
     class Meta:
         model=UserTable
-        fields=['name','place','age','phone','email','height','weight','bmi','calorie','preference','health_issue']
+        fields=['id','name','place','age', 'gender','phone','email','height','weight','bmi','calorie','preference','health_issue']
 
 
 
@@ -15,6 +15,16 @@ class LoginSerializer(ModelSerializer):
     class Meta:
         model=LoginTable
         fields=['username','password']
+
+class FeedbackSerializer(ModelSerializer):
+    class Meta:
+        model=FeedbackTable
+        fields=['feedback']
+
+class ComplaintSerializer(ModelSerializer):
+    class Meta:
+        model=ComplaintTable
+        fields=['complaint']
 
 
 class TrainerSerializer(ModelSerializer):

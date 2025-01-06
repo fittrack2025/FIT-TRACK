@@ -37,6 +37,7 @@ class UserTable(models.Model):
     LOGINID=models.ForeignKey(LoginTable,on_delete=models.CASCADE,blank=True,null=True)
     name= models.CharField(max_length=100, blank=True,null=True)
     place= models.CharField(max_length=100, blank=True,null=True)
+    gender= models.CharField(max_length=100, blank=True,null=True)
     age=models.IntegerField(blank=True, null=True)
     phone= models.BigIntegerField(blank=True, null=True)
     email= models.CharField(max_length=100, blank=True,null=True)
