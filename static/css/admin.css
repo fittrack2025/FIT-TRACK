@@ -200,6 +200,10 @@ li:hover {
     color: #bb4af3;
 }
 
+.logout {
+    margin-right: 20px;
+}
+
 .logout:hover {
     text-decoration: underline;
 }

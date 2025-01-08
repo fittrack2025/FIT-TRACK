@@ -35,7 +35,8 @@ urlpatterns = [
     path('Logind/',Logind.as_view()),
     path('Users/',Users.as_view()),
     path('Trainers/',Trainers.as_view()),
-
+    path('Dietchat/',DietitionChat.as_view()),
+    path('Trainchat/',TrainerChat.as_view()),
 
 
     #//////////////////////////////// TRAINER //////////////////////////////////////////
@@ -69,6 +70,7 @@ urlpatterns = [
     path('ViewPostAPIbytraineridday/<int:id>/<int:day>',ViewPostAPIbytraineridday.as_view(),name='ViewPostAPIbytraineridday'),
     path('chat/<int:sender_id>/<int:receiver_id>', ChatAPIView.as_view(), name='chat-api'),
     path('chatted-users/<int:userid>', ChattedUsersAPIView.as_view(), name='chatted-users'),
+    path('api/users/', UserListView.as_view(), name='user-list'),
 
 
 

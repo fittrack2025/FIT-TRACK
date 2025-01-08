@@ -5,9 +5,12 @@ from rest_framework import serializers
 
 
 class UserSerializer(ModelSerializer):
+    trainer_login_id = serializers.PrimaryKeyRelatedField(source='trainerid.LOGIN.id', queryset=LoginTable.objects.all(), required=False)
+    dietition_login_id = serializers.PrimaryKeyRelatedField(source='dietitionid.LOGIN.id', queryset=LoginTable.objects.all(), required=False)
+
     class Meta:
         model=UserTable
-        fields=['id','name','place','age', 'gender','phone','email','height','weight','bmi','calorie','preference','health_issue']
+        fields=['id','name','place','age', 'gender','phone','email','height','weight','bmi','calorie','preference','health_issue','dietitionid','trainerid','trainer_login_id','dietition_login_id']
 
 
 
@@ -28,9 +31,10 @@ class ComplaintSerializer(ModelSerializer):
 
 
 class TrainerSerializer(ModelSerializer):
+    LOGIN = serializers.PrimaryKeyRelatedField(queryset=LoginTable.objects.all())  # This includes only the ID of LoginTable
     class Meta:
         model=TrainerTable
-        fields=['id','name','age','phone','certificate','email']
+        fields=['id','name','age','phone','certificate','email','LOGIN']
 
 
 class WorkoutstatusSerializer(ModelSerializer):
@@ -40,9 +44,11 @@ class WorkoutstatusSerializer(ModelSerializer):
 
 
 class DietitionSerializer(ModelSerializer):
+    LOGIN = serializers.PrimaryKeyRelatedField(queryset=LoginTable.objects.all())  # This includes only the ID of LoginTable
+    
     class Meta:
         model=DietitionTable
-        fields=['id','name','age','phone','certificate','email']
+        fields=['id','name','age','phone','certificate','email','LOGIN']
 
 
 
@@ -75,4 +81,13 @@ class ChattedUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginTable
         fields = ['id', 'username', 'type']
+from rest_framework import serializers
+from .models import UserTable
+
+class UserSerializer1(serializers.ModelSerializer):
+    user_login_id=serializers.IntegerField(source='LOGINID.id',read_only=True)
+    class Meta:
+        model = UserTable
+        fields = ['id', 'name', 'place', 'age', 'gender', 'phone', 'email', 'height', 'weight', 'bmi', 'calorie', 'preference', 'health_issue','user_login_id']
+
 

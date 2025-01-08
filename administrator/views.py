@@ -408,6 +408,15 @@ class Reply(View):
         return HttpResponse('''<script>alert("noted");window.location="/Complaints/"</script>''') 
 
 
+class DietitionChat(View):
+    def get(self,request):
+        return render(request,'DIETITION/chat.html')
+    
+
+class TrainerChat(View):
+    def get(self,request):
+        return render(request,'TRAINER/chat.html')
+
 
 
 # /////////////////////////////////////// USER API //////////////////////////////////////////////////
@@ -736,4 +745,11 @@ class ChattedUsersAPIView(APIView):
         # Serialize the user details
         serializer = ChattedUsersSerializer(chatted_users, many=True)
         
+        return Response(serializer.data)
+
+
+class UserListView(APIView):
+    def get(self, request):
+        users = UserTable.objects.all()  # Get all users
+        serializer = UserSerializer1(users, many=True)
         return Response(serializer.data)
