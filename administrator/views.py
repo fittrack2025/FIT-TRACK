@@ -237,7 +237,7 @@ class Trainers(View):
     
 class Dietitionuser(View):
     def get(self,request, i_id):
-        obj=BMI.objects.filter(USER_id=i_id)
+        obj=UserTable.objects.filter(id=i_id)
         return render(request,'DIETITION/dietitionuser.html',{'val':obj})    
     
 class Logind(View):
@@ -302,7 +302,7 @@ class Logint(View):
 
 class Bookingt(View):
     def get(self,request ):
-        obj=BookingtTable.objects.all()
+        obj=UserTable.objects.filter(trainerid__LOGIN_id=request.session['lid'])
         return render(request,'TRAINER/bookingt.html',{'val':obj})    
     
 
@@ -410,12 +410,18 @@ class Reply(View):
 
 class DietitionChat(View):
     def get(self,request):
-        return render(request,'DIETITION/chat.html')
+        user_id = request.session.get('userid')  # Retrieve the logged-in user's ID from the session
+        return render(request, 'DIETITION/chat.html', {'user_id': user_id})
+
+        
     
 
 class TrainerChat(View):
     def get(self,request):
-        return render(request,'TRAINER/chat.html')
+        user_id = request.session.get('lid')  # Retrieve the logged-in user's ID from the session
+        return render(request, 'TRAINER/chat.html', {'user_id': user_id})
+
+        
 
 
 
@@ -487,7 +493,8 @@ class ViewPostsAPI(APIView):
 class ViewPostAPIbytrainerid(APIView):
     def get(self, request,id, *args, **kwargs):
         # Fetch data from PostTable
-        posts = PostTable.objects.filter(TRAINER__id=id).all()
+        print("id------------->", id)
+        posts = PostTable.objects.filter(TRAINER__LOGIN_id=id).all()
         
         # Serialize the data
         serialized_data = Postserializer2(posts, many=True).data
@@ -516,7 +523,7 @@ class ViewPostAPIbytrainerid(APIView):
 
         # Format the grouped data as a list of dictionaries
         output = list(grouped_data.values())
-
+        print("-----------> ", output)
         return Response(output)
     
 class ViewPostAPIbytraineridday(APIView):
@@ -573,7 +580,7 @@ class Userreg(APIView):
 
             # Extract password and save login profile
 
-            login_profile = login_serial.save(type='USER')
+            login_profile = login_serial.save(type='pending')
 
             # Save the user with the login profile
             user_serial.save(LOGINID=login_profile, trainerid=trainer, dietitionid=dietition)
@@ -731,6 +738,7 @@ class ChattedUsersAPIView(APIView):
         Get a list of users the logged-in user has chatted with.
         """
         user = userid  # Logged-in user
+        print(user)
         
         # Fetch all users the logged-in user has sent or received messages with
         sent_chats = Chat.objects.filter(sender=user).values_list('receiver', flat=True)
@@ -743,7 +751,8 @@ class ChattedUsersAPIView(APIView):
         chatted_users = LoginTable.objects.filter(id__in=chatted_user_ids)
         
         # Serialize the user details
-        serializer = ChattedUsersSerializer(chatted_users, many=True)
+        serializer = ChattedUsersSerializer1(chatted_users, many=True)
+        print(serializer.data)
         
         return Response(serializer.data)
 

@@ -17,7 +17,6 @@
     <table border="1" >
         <tr>
             <th>No</th>
-            <th>TRAINER</th>
             <th>Username</th>
             <th>Date & Time </th>
             <th>Status</th>
@@ -28,11 +27,10 @@
         {% for i in val %}
         <tr class="one">
             <td>{{forloop.counter}}</td>
-            <td>{{i.TRAINER.name}}</td>
-            <td>{{i.USER.name}}</td>
-            <td>{{i.date}} {{i.time}}</td>
-            <td>{{i.Status}}</td>
-            <td><a href="/Dietitionuser/{{i.USER.id}}">details</a> </td>
+            <td>{{i.name}}</td>
+            <td>{{i.created_at}}</td>
+            <td>{{i.status}}</td>
+            <td><a href="/Dietitionuser/{{i.id}}">details</a> </td>
             
         
         </tr>

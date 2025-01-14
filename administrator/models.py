@@ -49,7 +49,8 @@ class UserTable(models.Model):
     calorie= models.CharField(max_length=100, blank=True,null=True) 
     preference= models.CharField(max_length=100, blank=True,null=True)
     health_issue= models.CharField(max_length=100, blank=True,null=True)
-    
+    created_at = models.DateField(auto_now_add=True)
+    status = models.CharField(max_length=30, default='active')
 
 
 class FeedbackTable(models.Model):

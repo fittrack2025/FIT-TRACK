@@ -43,6 +43,7 @@
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Video</th>
+                        <th scope="col">Gif</th>
                         <th scope="col">Description</th>
                         <th scope="col">Day</th>
                         <th scope="col">Actions</th>
@@ -56,6 +57,11 @@
                             <video controls width="200" height="120">
                                 <source src="{{ i.videos.url }}" type="video/mp4">
                             </video>
+                            
+                        </td>
+                        <td>
+                            <img src="{{ i.videos.url }}" alt="video format" width="250" height="120">
+
                         </td>
                         <td class="description">{{ i.description }}</td>
                         <td>{{ i.workoutday }}</td>

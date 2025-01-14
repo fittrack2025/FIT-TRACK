@@ -81,6 +81,17 @@ class ChattedUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoginTable
         fields = ['id', 'username', 'type']
+class ChattedUsersSerializer1(serializers.ModelSerializer):
+    name = serializers.SerializerMethodField()  # Add a custom field for the name
+
+    class Meta:
+        model = LoginTable
+        fields = ['id', 'username', 'type', 'name']  # Include the custom name field
+
+    def get_name(self, obj):
+        # Fetch the related UserTable instance for the given LoginTable instance
+        user = UserTable.objects.filter(LOGINID=obj).first()
+        return user.name if user else None 
 from rest_framework import serializers
 from .models import UserTable
 
